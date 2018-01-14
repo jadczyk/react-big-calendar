@@ -125,7 +125,7 @@ export function eventDaySegStyle(segStart, segEnd) {
   let startPer = startMinutes / DAY_MINUTES * 100 + '%'
   let endPer = endMinutes / DAY_MINUTES * 100 + '%'
   let height = (endMinutes - startMinutes) / DAY_MINUTES * 100 + '%'
-  return { top: startPer, height: height, position: 'relative' }
+  return { top: startPer, height: height, position: 'absolute', width: '100%' }
 }
 
 //supershort events not supported
@@ -140,11 +140,17 @@ export function eventDaySegment(event, date, { startAccessor, endAccessor }) {
   if (dates.gte(eStart, dayStart) && dates.lt(eStart, dayEnd)) {
     let segmentEnd = dates.min(eEnd, dayEnd)
     let segmentStart = eStart
+    let continuesAfter = false
+    if (dates.gt(eEnd, dayEnd)) {
+      //ends another day
+      continuesAfter = true
+    }
     return {
       event,
       segmentStart: segmentStart,
       segmentEnd: segmentEnd,
       style: eventDaySegStyle(segmentStart, segmentEnd),
+      continuesAfter,
     }
   } else if (dates.gt(eEnd, dayStart) && dates.lte(eEnd, dayEnd)) {
     //start previous day (otherwise we would enter 1st condition), end within day
@@ -155,6 +161,7 @@ export function eventDaySegment(event, date, { startAccessor, endAccessor }) {
       segmentStart: segmentStart,
       segmentEnd: segmentEnd,
       style: eventDaySegStyle(segmentStart, segmentEnd),
+      continuesPrior: true,
     }
   } else if (dates.gt(eEnd, dayStart) && dates.lt(eStart, dayStart)) {
     //multiday event
@@ -162,9 +169,11 @@ export function eventDaySegment(event, date, { startAccessor, endAccessor }) {
     let segmentEnd = dayEnd
     return {
       event,
-      segmentStart: dayStart,
-      segmentEnd: dayEnd,
+      segmentStart: segmentStart,
+      segmentEnd: segmentEnd,
       style: eventDaySegStyle(segmentStart, segmentEnd),
+      continuesPrior: true,
+      continuesAfter: true,
     }
   }
 

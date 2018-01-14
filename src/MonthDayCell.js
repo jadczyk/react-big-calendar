@@ -8,7 +8,6 @@ class MonthDayCell extends React.Component {
   render() {
     const {
       date,
-      dayOfWeek,
       daySegments,
       eventComponent: Event,
       eventWrapperComponent: EventWrapper,
@@ -25,38 +24,41 @@ class MonthDayCell extends React.Component {
 
     return (
       <div className="rbc-month-day-cell" style={{ ...props.style }}>
-        {daySegments.map((seg, idx) => {
-          let event = seg.event
-          let title = get(event, titleAccessor),
-            end = get(event, endAccessor),
-            start = get(event, startAccessor)
-          if (eventPropGetter)
-            var { style, className: xClassName } = eventPropGetter(
-              event,
-              start,
-              end,
-              selected
-            )
+        <div className={cn('rbc-date-cell')}>{date.getDate()}</div>
+        <div className="rbc-month-day-cell-events">
+          {daySegments.map((seg, idx) => {
+            let event = seg.event
+            let title = get(event, titleAccessor),
+              end = get(event, endAccessor),
+              start = get(event, startAccessor)
+            if (eventPropGetter)
+              var { style, className: xClassName } = eventPropGetter(
+                event,
+                start,
+                end,
+                selected
+              )
 
-          return (
-            <EventWrapper event={event} key={event.id}>
-              <div
-                style={{ ...style, ...seg.style }}
-                className={cn('rbc-event', className, xClassName, {
-                  'rbc-selected': isSelected(event, selected),
-                  // 'rbc-event-continues-prior': continuesPrior,
-                  // 'rbc-event-continues-after': continuesAfter,
-                })}
-                onClick={e => onSelect(event, e)}
-                onDoubleClick={e => onDoubleClick(event, e)}
-              >
-                <div className="rbc-event-content" title={title}>
-                  {Event ? <Event event={event} title={title} /> : title}
+            return (
+              <EventWrapper event={event} key={event.id}>
+                <div
+                  style={{ ...style, ...seg.style }}
+                  className={cn('rbc-event', className, xClassName, {
+                    'rbc-selected': isSelected(event, selected),
+                    'rbc-event-continues-earlier': seg.continuesPrior,
+                    'rbc-event-continues-later': seg.continuesAfter,
+                  })}
+                  onClick={e => onSelect(event, e)}
+                  onDoubleClick={e => onDoubleClick(event, e)}
+                >
+                  <div className="rbc-event-content" title={title}>
+                    {Event ? <Event event={event} title={title} /> : title}
+                  </div>
                 </div>
-              </div>
-            </EventWrapper>
-          )
-        })}
+              </EventWrapper>
+            )
+          })}
+        </div>
       </div>
     )
   }
