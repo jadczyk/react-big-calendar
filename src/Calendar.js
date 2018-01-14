@@ -635,7 +635,7 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-		verticalMonthDailyView: false,
+    verticalMonthDailyView: false,
     date: now,
     step: 30,
     length: 30,
@@ -718,7 +718,9 @@ class Calendar extends React.Component {
         eventWrapper: EventWrapper,
         dayWrapper: BackgroundWrapper,
         dateCellWrapper: BackgroundWrapper,
-				dateContentRow: this.props.verticalMonthDailyView ? DateContentRowVertical : DateContentRow
+        dateContentRow: this.props.verticalMonthDailyView
+          ? DateContentRowVertical
+          : DateContentRow,
       }
     )
 

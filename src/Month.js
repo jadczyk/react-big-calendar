@@ -173,7 +173,7 @@ class MonthView extends React.Component {
     events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
     events.sort((a, b) => sortEvents(a, b, this.props))
 
-		const DateContentRow = components.dateContentRow;
+    const DateContentRow = components.dateContentRow
     return (
       <DateContentRow
         key={weekIdx}

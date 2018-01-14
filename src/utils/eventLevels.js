@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex'
 import dates from './dates'
 import { accessor as get } from './accessors'
 
-const DAY_MINUTES = 24 * 60;
+const DAY_MINUTES = 24 * 60
 
 export function endOfRange(dateRange, unit = 'day') {
   return {
@@ -116,59 +116,57 @@ export function sortEvents(
 }
 
 export function eventDaySegStyle(segStart, segEnd) {
-  let startMinutes = segStart.getHours() * 60 + segStart.getMinutes();
-  let endMinutes = segEnd.getHours() * 60 + segEnd.getMinutes();
-  if(endMinutes === 0) {	//whole day segment
-		endMinutes = DAY_MINUTES;
-	}
-  let startPer = startMinutes / DAY_MINUTES * 100 + '%';
-  let endPer = endMinutes / DAY_MINUTES * 100 + '%';
-  let height = (endMinutes - startMinutes) / DAY_MINUTES * 100 + '%';
-	return { top: startPer, height: height, position: 'relative'};
+  let startMinutes = segStart.getHours() * 60 + segStart.getMinutes()
+  let endMinutes = segEnd.getHours() * 60 + segEnd.getMinutes()
+  if (endMinutes === 0) {
+    //whole day segment
+    endMinutes = DAY_MINUTES
+  }
+  let startPer = startMinutes / DAY_MINUTES * 100 + '%'
+  let endPer = endMinutes / DAY_MINUTES * 100 + '%'
+  let height = (endMinutes - startMinutes) / DAY_MINUTES * 100 + '%'
+  return { top: startPer, height: height, position: 'relative' }
 }
 
 //supershort events not supported
-export function eventDaySegment(event, date, { startAccessor, endAccessor })
-{
-	let eStart = get(event, startAccessor);
-	let eEnd = get(event, endAccessor);
+export function eventDaySegment(event, date, { startAccessor, endAccessor }) {
+  let eStart = get(event, startAccessor)
+  let eEnd = get(event, endAccessor)
 
-	let dayStart = date;
-	let dayEnd = dates.add(date, 1, 'day');
+  let dayStart = date
+  let dayEnd = dates.add(date, 1, 'day')
 
-	//start within day
-	if(dates.gte(eStart, dayStart) && dates.lt(eStart, dayEnd)) {
-	  let segmentEnd = dates.min(eEnd, dayEnd);
-	  let segmentStart = eStart;
-		return {
-			event,
-			segmentStart: segmentStart,
-			segmentEnd: segmentEnd,
-			style: eventDaySegStyle(segmentStart, segmentEnd)
-		};
-  }
-  //start previous day (otherwise we would enter 1st condition), end within day
-  else if(dates.gt(eEnd, dayStart) && dates.lte(eEnd, dayEnd)) {
-		let segmentStart = dayStart;
-		let segmentEnd = eEnd;
-		return {
-			event,
-			segmentStart: segmentStart,
-			segmentEnd: segmentEnd,
-			style: eventDaySegStyle(segmentStart, segmentEnd)
-		}
-	}
-	//multiday event
-	else if(dates.gt(eEnd, dayStart) && dates.lt(eStart, dayStart)) {
-		let segmentStart = dayStart;
-		let segmentEnd = dayEnd;
+  //start within day
+  if (dates.gte(eStart, dayStart) && dates.lt(eStart, dayEnd)) {
+    let segmentEnd = dates.min(eEnd, dayEnd)
+    let segmentStart = eStart
+    return {
+      event,
+      segmentStart: segmentStart,
+      segmentEnd: segmentEnd,
+      style: eventDaySegStyle(segmentStart, segmentEnd),
+    }
+  } else if (dates.gt(eEnd, dayStart) && dates.lte(eEnd, dayEnd)) {
+    //start previous day (otherwise we would enter 1st condition), end within day
+    let segmentStart = dayStart
+    let segmentEnd = eEnd
+    return {
+      event,
+      segmentStart: segmentStart,
+      segmentEnd: segmentEnd,
+      style: eventDaySegStyle(segmentStart, segmentEnd),
+    }
+  } else if (dates.gt(eEnd, dayStart) && dates.lt(eStart, dayStart)) {
+    //multiday event
+    let segmentStart = dayStart
+    let segmentEnd = dayEnd
     return {
       event,
       segmentStart: dayStart,
       segmentEnd: dayEnd,
-			style: eventDaySegStyle(segmentStart, segmentEnd)
+      style: eventDaySegStyle(segmentStart, segmentEnd),
     }
   }
 
-	return null;
+  return null
 }
