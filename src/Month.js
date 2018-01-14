@@ -14,7 +14,6 @@ import raf from 'dom-helpers/util/requestAnimationFrame'
 
 import Popup from './Popup'
 import Overlay from 'react-overlays/lib/Overlay'
-import DateContentRow from './DateContentRow'
 import Header from './Header'
 import DateHeader from './DateHeader'
 
@@ -174,6 +173,7 @@ class MonthView extends React.Component {
     events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
     events.sort((a, b) => sortEvents(a, b, this.props))
 
+		const DateContentRow = components.dateContentRow;
     return (
       <DateContentRow
         key={weekIdx}

@@ -19,6 +19,8 @@ import VIEWS from './Views'
 import Toolbar from './Toolbar'
 import EventWrapper from './EventWrapper'
 import BackgroundWrapper from './BackgroundWrapper'
+import DateContentRow from './DateContentRow'
+import DateContentRowVertical from './DateContentRowVertical'
 
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
@@ -294,6 +296,8 @@ class Calendar extends React.Component {
      * @default ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
+
+    verticalMonthDailyView: PropTypes.bool,
 
     /**
      * The string name of the destination view for drill-down actions, such
@@ -631,6 +635,7 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
+		verticalMonthDailyView: false,
     date: now,
     step: 30,
     length: 30,
@@ -713,6 +718,7 @@ class Calendar extends React.Component {
         eventWrapper: EventWrapper,
         dayWrapper: BackgroundWrapper,
         dateCellWrapper: BackgroundWrapper,
+				dateContentRow: this.props.verticalMonthDailyView ? DateContentRowVertical : DateContentRow
       }
     )
 

@@ -13,6 +13,7 @@ import 'react-big-calendar/lib/less/styles.less'
 import './styles.less'
 import './prism.less'
 import Basic from './demos/basic'
+import BasicVertical from './demos/basicVertical'
 import Selectable from './demos/selectable'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
@@ -25,12 +26,13 @@ let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
 class Example extends React.Component {
-  state = { selected: 'basic' }
+  state = { selected: 'basicVertical' }
 
   render() {
     let selected = this.state.selected
     let Current = {
       basic: Basic,
+      basicVertical: BasicVertical,
       selectable: Selectable,
       cultures: Cultures,
       popup: Popup,
@@ -72,6 +74,11 @@ class Example extends React.Component {
               <li className={cn({ active: selected === 'basic' })}>
                 <a href="#" onClick={this.select.bind(null, 'basic')}>
                   Basic
+                </a>
+              </li>
+              <li className={cn({ active: selected === 'basicVertical' })}>
+                <a href="#" onClick={this.select.bind(null, 'basicVertical')}>
+                  BasicVertical
                 </a>
               </li>
               <li className={cn({ active: selected === 'selectable' })}>
